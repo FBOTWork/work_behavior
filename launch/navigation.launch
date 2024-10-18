@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch> 
+    <include file="$(find turtlebot2i_bringup)/launch/turtlebot2i_navigate.launch" />
+
+    <include file="$(find work_world)/launch/pose.launch" />
+</launch>
