@@ -12,14 +12,14 @@ if __name__ == '__main__':
   with sm:
     smach.StateMachine.add('GOTO_WAYPOINT1', getGoToFixedMachine('service_table'), 
     transitions = {
-      'succeeded': 'succeeded',
+      'succeeded': 'GOTO_WAYPOINT2',
       'aborted': 'GOTO_WAYPOINT1',
       'preempted': 'preempted',
       'arrived': 'arrived'
     })
     smach.StateMachine.add('GOTO_WAYPOINT2', getGoToFixedMachine('container_table'), 
     transitions = {
-      'succeeded': 'succeeded',
+      'succeeded': 'GOTO_WAYPOINT3',
       'aborted': 'GOTO_WAYPOINT2',
       'preempted': 'preempted',
       'arrived': 'arrived'
@@ -27,7 +27,7 @@ if __name__ == '__main__':
   outcome = sm.execute()
     smach.StateMachine.add('GOTO_WAYPOINT3', getGoToFixedMachine('precision_table'), 
     transitions = {
-      'succeeded': 'succeeded',
+      'succeeded': 'GOTO_WAYPOINT4',
       'aborted': 'GOTO_WAYPOINT3',
       'preempted': 'preempted',
       'arrived': 'arrived'
