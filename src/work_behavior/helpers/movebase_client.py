@@ -2,7 +2,7 @@
 
 import rospy
 
-from move_base.msgs.msg import MoveBaseAction
+from move_base_msgs.msg import MoveBaseAction
 
 import actionlib
 
