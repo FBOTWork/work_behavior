@@ -5,7 +5,7 @@ import smach
 
 from move_base_msgs.msg import MoveBaseGoal
 
-from behavior.helpers.movebase_client  import create_movebase_client
+from work_behavior.helpers.movebase_client  import create_movebase_client
 
 #Definir estado GoTo
 
@@ -26,10 +26,10 @@ class GoToState(smach.State):
          self.client.send_goal(goal)
          result = self.client.wait_for_result()
 
-     if self.preempt_requested():
-        return 'preempted'
+         if self.preempt_requested():
+            return 'preempted'
 
-     if result:
-        return 'succeeded'
-     else:
-        return 'aborted'
+         if result:
+            return 'succeeded'
+         else:
+            return 'aborted'
