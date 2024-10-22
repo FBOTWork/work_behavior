@@ -3,7 +3,7 @@
 
 # Code used to obtain the pose and ID of the AprilTag closest to the robot.
 # It will be used in the Basic Manipulation Test I, II and III.
-# Gabriel Torres 10/21/2024
+# Gabriel Torres 10/21/24
 
 import rospy
 import smach
