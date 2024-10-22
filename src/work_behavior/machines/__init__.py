@@ -1,2 +1,3 @@
 from work_behavior.machines.goto_fixed import getGoToFixedMachine
 from work_behavior.machines.goto import getGoToMachine
+from work_behavior.machines.pick_attc import pickupATTC
