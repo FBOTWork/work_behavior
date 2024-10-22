@@ -1,23 +1,29 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
 
+# Code used to obtain the pose and ID of the AprilTag closest to the robot.
+# It will be used in the Basic Manipulation Test I, II and III.
+# Gabriel Torres 10/21/2024
+
 import rospy
 import smach
 from apriltag_ros.msg import AprilTagDetectionArray
 
 class GetInfoFromNearestAprilTagState(smach.State):
     def __init__(self):
-        # Inicializa o estado SMACH com o resultado 'succeeded' ou 'aborted'
-        smach.State.__init__(self, outcomes=['succeeded', 'aborted'], input_keys=['id'], output_keys=['pose'])
+        # Initializes the SMACH state
+        smach.State.__init__(self, outcomes=['succeeded', 'aborted'], output_keys=['pose'])
+        # Initializes the pose variable as None, indicating that no pose was detected
         self.pose = None
-        # Assina o tópico /tag_detections
+        # Subscribes to the /tag_detections topic
         self.subscriber = rospy.Subscriber('/tag_detections', AprilTagDetectionArray, self.callback)
 
     def callback(self, msg):
-        # Verifica se houve alguma detecção
+        # Checks if there was any detection
         if len(msg.detections) > 0:
-            # Pega a primeira detecção e obtém a pose
+            # Gets the first detection and retrieves the pose
             self.pose = msg.detections[0].pose.pose.pose
+            # Gets the first detection and retrieves the ID
             self.id = msg.detections[0].id
             print(self.pose)
             print("ID:", self.id)
@@ -25,15 +31,15 @@ class GetInfoFromNearestAprilTagState(smach.State):
             self.pose = None
 
     def execute(self, userdata):
-        rospy.loginfo('Lendo o tópico /tag_detections...')
-        # Espera até receber uma mensagem ou timeout
-        timeout = rospy.Time.now() + rospy.Duration(5.0)  # Timeout de 5 segundos
+        rospy.loginfo('Reading the /tag_detections topic...')
+        # Waits until a message is received or timeout occurs
+        timeout = rospy.Time.now() + rospy.Duration(5.0)  # 5-second timeout
         while not rospy.is_shutdown() and rospy.Time.now() < timeout:
-            if self.pose is not None:
-                userdata.pose = self.pose  # Salva a pose em userdata
-                rospy.loginfo('Pose obtida com sucesso.')
+            if self.pose is not None: # Checks if the pose was obtained
+                userdata.pose = self.pose  # Saves the pose in userdata to be used by other states
+                rospy.loginfo('Pose successfully obtained.')
                 return 'succeeded'
-            rospy.sleep(0.1)  # Espera um pouco antes de tentar novamente
+            rospy.sleep(0.1)  # Waits a bit before trying again
 
-        rospy.loginfo('Falha ao obter a pose do AprilTag.')
+        rospy.loginfo('Failed to obtain the AprilTag pose.')
         return 'aborted'
