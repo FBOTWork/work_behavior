@@ -5,13 +5,14 @@ import rospy
 import smach
 from geometry_msgs.msg import PoseStamped
 import moveit_commander
+import sys
 
 
 # Estado para mover o braço com base na pose
 class MoveArmState(smach.State):
     def __init__(self):
         smach.State.__init__(
-            self, outcomes=["succeeded", "failed"], input_keys=["target_pose"]
+            self, outcomes=["succeeded", "aborted", "preempted"], input_keys=["target_pose"]
         )
         # Inicializar o moveit_commander
         moveit_commander.roscpp_initialize(sys.argv)
@@ -24,12 +25,12 @@ class MoveArmState(smach.State):
         rospy.loginfo("Recebendo pose do userdata...")
 
         # Verificar se a pose foi passada corretamente no userdata
-        if "target_pose" not in userdata or not userdata.target_pose:
+        if "target_pose" not in userdata or not userdata.arm_target_pose:
             rospy.logerr("Nenhuma pose foi passada no userdata.")
-            return "failed"
+            return "aborted"
 
         # Obter a pose do userdata
-        target_pose = userdata.target_pose
+        target_pose = userdata.arm_target_pose
 
         rospy.loginfo(
             "Movendo o braço para a posição: {}".format(target_pose.pose.position)
@@ -49,4 +50,4 @@ class MoveArmState(smach.State):
             return "succeeded"
         else:
             rospy.logerr("Falha ao mover o braço.")
-            return "failed"
+            return "aborted"
