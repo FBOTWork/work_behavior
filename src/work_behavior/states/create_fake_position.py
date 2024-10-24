@@ -2,7 +2,7 @@ import rospy
 import smach
 from geometry_msgs.msg import Pose
 
-class CreateFakePosition(smach.State):
+class CreateFakePositionState(smach.State):
     def __init__(self):
         smach.State.__init__(self, outcomes=['succeeded'], output_keys=['fake_pose'])
         self.pose_publisher = rospy.Publisher('/fake_pose', Pose, queue_size=10)

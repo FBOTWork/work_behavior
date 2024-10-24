@@ -3,3 +3,4 @@ from work_behavior.states.get_target_pose import GetTargetPoseState
 from work_behavior.states.set_fixed_query import SetFixedQueryState
 from work_behavior.states.get_apriltag_pose import GetInfoFromNearestAprilTagState
 from work_behavior.states.move_arm_by_pose import MoveArmState
+from work_behavior.states.create_fake_position import CreateFakePositionState
