@@ -5,7 +5,7 @@ from work_behavior.states import GetInfoFromNearestAprilTagState, MoveArmState
 
 
 def pickupATTC():
-    
+
     # Create a SMACH state machine
     sm = smach.StateMachine(outcomes=["succeeded", "aborted", "preempted"])
 
@@ -16,7 +16,8 @@ def pickupATTC():
             MoveArmState(),
             transitions={
                 "succeeded": "succeeded",
-                "failed": "failed",
+                "aborted": "aborted",
+                "preempted": "preempted",
             },
         )
     # Execute the state machine
